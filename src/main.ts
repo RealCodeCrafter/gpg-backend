@@ -36,24 +36,23 @@ async function bootstrap() {
     
     const superAdmin = await authService.createSuperAdmin(superAdminLogin, superAdminPassword);
     
+    // Use process.stdout.write to ensure logs appear in PM2
+    const logMessage = superAdmin 
+      ? `\n========================================\n✅ SUPER ADMIN CREATED\n========================================\nLogin: ${superAdminLogin}\nPassword: ${superAdminPassword}\n========================================\n`
+      : `\n========================================\nℹ️  SUPER ADMIN ALREADY EXISTS\n========================================\nLogin: ${superAdminLogin}\n(Password was set on first startup)\n========================================\n`;
+    
+    // Log to both console and process.stdout for PM2
+    console.log(logMessage);
+    process.stdout.write(logMessage);
+    
     if (superAdmin) {
-      console.log('\n========================================');
-      console.log('✅ SUPER ADMIN CREATED');
-      console.log('========================================');
-      console.log('Login:', superAdminLogin);
-      console.log('Password:', superAdminPassword);
-      console.log('========================================\n');
-    } else {
-      console.log('\n========================================');
-      console.log('ℹ️  SUPER ADMIN ALREADY EXISTS');
-      console.log('========================================');
-      console.log('Login:', superAdminLogin);
-      console.log('(Password was set on first startup)');
-      console.log('========================================\n');
+      // Also log to stderr for better visibility in PM2
+      process.stderr.write(`\n[SUPER ADMIN] Login: ${superAdminLogin}\n[SUPER ADMIN] Password: ${superAdminPassword}\n\n`);
     }
   } catch (error) {
-    console.error('\n❌ ERROR CREATING SUPER ADMIN:', error);
-    console.error('========================================\n');
+    const errorMessage = `\n❌ ERROR CREATING SUPER ADMIN: ${error}\n========================================\n`;
+    console.error(errorMessage);
+    process.stderr.write(errorMessage);
   }
   
   const port = process.env.PORT || 3000;

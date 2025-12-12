@@ -85,7 +85,9 @@ export class AuthService {
       });
 
       if (existingSuperAdmin) {
-        console.log(`Super admin already exists with login: ${existingSuperAdmin.login}`);
+        const message = `[AUTH SERVICE] Super admin already exists with login: ${existingSuperAdmin.login}`;
+        console.log(message);
+        process.stdout.write(message + '\n');
         return null; // Super admin already exists
       }
 
@@ -98,10 +100,14 @@ export class AuthService {
       });
 
       const saved = await this.userRepository.save(superAdmin);
-      console.log(`Super admin created successfully with login: ${saved.login}`);
+      const message = `[AUTH SERVICE] Super admin created successfully with login: ${saved.login}`;
+      console.log(message);
+      process.stdout.write(message + '\n');
       return saved;
     } catch (error) {
-      console.error('Error creating super admin:', error);
+      const errorMessage = `[AUTH SERVICE] Error creating super admin: ${error}`;
+      console.error(errorMessage);
+      process.stderr.write(errorMessage + '\n');
       throw error;
     }
   }
