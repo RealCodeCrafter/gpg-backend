@@ -28,36 +28,43 @@ async function bootstrap() {
   // Serve static files from root (for direct file access)
   app.use(express.static(join(__dirname, '..', 'upload')));
   
-  // Create super admin on startup
-  try {
-    const authService = app.get(AuthService);
-    const superAdminLogin = 'superadmin';
-    const superAdminPassword = crypto.randomBytes(16).toString('hex') + 'A1!';
-    
-    const superAdmin = await authService.createSuperAdmin(superAdminLogin, superAdminPassword);
-    
-    // Use process.stdout.write to ensure logs appear in PM2
-    const logMessage = superAdmin 
-      ? `\n========================================\n✅ SUPER ADMIN CREATED\n========================================\nLogin: ${superAdminLogin}\nPassword: ${superAdminPassword}\n========================================\n`
-      : `\n========================================\nℹ️  SUPER ADMIN ALREADY EXISTS\n========================================\nLogin: ${superAdminLogin}\n(Password was set on first startup)\n========================================\n`;
-    
-    // Log to both console and process.stdout for PM2
-    console.log(logMessage);
-    process.stdout.write(logMessage);
-    
-    if (superAdmin) {
-      // Also log to stderr for better visibility in PM2
-      process.stderr.write(`\n[SUPER ADMIN] Login: ${superAdminLogin}\n[SUPER ADMIN] Password: ${superAdminPassword}\n\n`);
-    }
-  } catch (error) {
-    const errorMessage = `\n❌ ERROR CREATING SUPER ADMIN: ${error}\n========================================\n`;
-    console.error(errorMessage);
-    process.stderr.write(errorMessage);
-  }
-  
   const port = process.env.PORT || 3000;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
+  
+  // Create super admin after app is listening (database connection is ready)
+  // Wait a bit for database to be fully ready
+  setTimeout(async () => {
+    try {
+      console.log('\n[STARTUP] Initializing super admin...');
+      const authService = app.get(AuthService);
+      const superAdminLogin = 'superadmin';
+      const superAdminPassword = crypto.randomBytes(16).toString('hex') + 'A1!';
+      
+      const superAdmin = await authService.createSuperAdmin(superAdminLogin, superAdminPassword);
+      
+      // Use process.stdout.write to ensure logs appear in PM2
+      const logMessage = superAdmin 
+        ? `\n========================================\n✅ SUPER ADMIN CREATED\n========================================\nLogin: ${superAdminLogin}\nPassword: ${superAdminPassword}\n========================================\n`
+        : `\n========================================\nℹ️  SUPER ADMIN ALREADY EXISTS\n========================================\nLogin: ${superAdminLogin}\n(Password was set on first startup)\n========================================\n`;
+      
+      // Log to both console and process.stdout for PM2
+      console.log(logMessage);
+      process.stdout.write(logMessage);
+      process.stdout.write('\n'); // Flush stdout
+      
+      if (superAdmin) {
+        // Also log to stderr for better visibility in PM2
+        const stderrMessage = `\n[SUPER ADMIN] Login: ${superAdminLogin}\n[SUPER ADMIN] Password: ${superAdminPassword}\n\n`;
+        process.stderr.write(stderrMessage);
+        process.stderr.write('\n'); // Flush stderr
+      }
+    } catch (error) {
+      const errorMessage = `\n❌ ERROR CREATING SUPER ADMIN: ${error}\n========================================\n`;
+      console.error(errorMessage);
+      process.stderr.write(errorMessage);
+    }
+  }, 2000); // Wait 2 seconds for database connection
 }
 bootstrap();
 

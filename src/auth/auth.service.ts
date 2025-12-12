@@ -80,6 +80,7 @@ export class AuthService {
 
   async createSuperAdmin(login: string, password: string) {
     try {
+      console.log('[AUTH SERVICE] Checking for existing super admin...');
       const existingSuperAdmin = await this.userRepository.findOne({
         where: { role: UserRole.SUPER_ADMIN },
       });
@@ -88,9 +89,11 @@ export class AuthService {
         const message = `[AUTH SERVICE] Super admin already exists with login: ${existingSuperAdmin.login}`;
         console.log(message);
         process.stdout.write(message + '\n');
+        process.stdout.write('\n'); // Flush
         return null; // Super admin already exists
       }
 
+      console.log('[AUTH SERVICE] Creating new super admin...');
       const hashedPassword = await bcrypt.hash(password, 10);
       const superAdmin = this.userRepository.create({
         login,
@@ -103,11 +106,13 @@ export class AuthService {
       const message = `[AUTH SERVICE] Super admin created successfully with login: ${saved.login}`;
       console.log(message);
       process.stdout.write(message + '\n');
+      process.stdout.write('\n'); // Flush
       return saved;
     } catch (error) {
       const errorMessage = `[AUTH SERVICE] Error creating super admin: ${error}`;
       console.error(errorMessage);
       process.stderr.write(errorMessage + '\n');
+      process.stderr.write('\n'); // Flush
       throw error;
     }
   }
