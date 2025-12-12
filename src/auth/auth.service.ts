@@ -79,23 +79,31 @@ export class AuthService {
   }
 
   async createSuperAdmin(login: string, password: string) {
-    const existingSuperAdmin = await this.userRepository.findOne({
-      where: { role: UserRole.SUPER_ADMIN },
-    });
+    try {
+      const existingSuperAdmin = await this.userRepository.findOne({
+        where: { role: UserRole.SUPER_ADMIN },
+      });
 
-    if (existingSuperAdmin) {
-      return null; // Super admin already exists
+      if (existingSuperAdmin) {
+        console.log(`Super admin already exists with login: ${existingSuperAdmin.login}`);
+        return null; // Super admin already exists
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const superAdmin = this.userRepository.create({
+        login,
+        password: hashedPassword,
+        name: 'Super Admin',
+        role: UserRole.SUPER_ADMIN,
+      });
+
+      const saved = await this.userRepository.save(superAdmin);
+      console.log(`Super admin created successfully with login: ${saved.login}`);
+      return saved;
+    } catch (error) {
+      console.error('Error creating super admin:', error);
+      throw error;
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const superAdmin = this.userRepository.create({
-      login,
-      password: hashedPassword,
-      name: 'Super Admin',
-      role: UserRole.SUPER_ADMIN,
-    });
-
-    return this.userRepository.save(superAdmin);
   }
 
   async findAll(currentUser: User) {

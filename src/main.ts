@@ -17,6 +17,9 @@ async function bootstrap() {
     whitelist: true,
     forbidNonWhitelisted: true,
     transform: true,
+    transformOptions: {
+      enableImplicitConversion: true,
+    },
   }));
   
   // Serve static files from upload directory
@@ -26,18 +29,31 @@ async function bootstrap() {
   app.use(express.static(join(__dirname, '..', 'upload')));
   
   // Create super admin on startup
-  const authService = app.get(AuthService);
-  const superAdminLogin = 'superadmin';
-  const superAdminPassword = crypto.randomBytes(16).toString('hex') + 'A1!';
-  
-  const superAdmin = await authService.createSuperAdmin(superAdminLogin, superAdminPassword);
-  
-  if (superAdmin) {
-    console.log('========================================');
-    console.log('SUPER ADMIN CREATED');
-    console.log('Login:', superAdminLogin);
-    console.log('Password:', superAdminPassword);
-    console.log('========================================');
+  try {
+    const authService = app.get(AuthService);
+    const superAdminLogin = 'superadmin';
+    const superAdminPassword = crypto.randomBytes(16).toString('hex') + 'A1!';
+    
+    const superAdmin = await authService.createSuperAdmin(superAdminLogin, superAdminPassword);
+    
+    if (superAdmin) {
+      console.log('\n========================================');
+      console.log('✅ SUPER ADMIN CREATED');
+      console.log('========================================');
+      console.log('Login:', superAdminLogin);
+      console.log('Password:', superAdminPassword);
+      console.log('========================================\n');
+    } else {
+      console.log('\n========================================');
+      console.log('ℹ️  SUPER ADMIN ALREADY EXISTS');
+      console.log('========================================');
+      console.log('Login:', superAdminLogin);
+      console.log('(Password was set on first startup)');
+      console.log('========================================\n');
+    }
+  } catch (error) {
+    console.error('\n❌ ERROR CREATING SUPER ADMIN:', error);
+    console.error('========================================\n');
   }
   
   const port = process.env.PORT || 3000;

@@ -32,6 +32,10 @@ export class CategoryController {
     @Body() createCategoryDto: CreateCategoryDto,
     @UploadedFiles() images?: any[],
   ) {
+    console.log('Category create - received data:', {
+      createCategoryDto,
+      imagesCount: images?.length || 0,
+    });
     return this.categoryService.create(createCategoryDto, images);
   }
 
