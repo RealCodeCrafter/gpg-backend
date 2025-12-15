@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Brand } from './entities/brand.entity';
@@ -22,15 +22,6 @@ export class BrandService {
   async create(createBrandDto: CreateBrandDto, images?: any[]): Promise<Brand> {
     // Verify category exists
     await this.categoryService.findOne(createBrandDto.categoryId);
-
-    // Check if brand with same name already exists
-    const existingBrand = await this.brandRepository.findOne({
-      where: { name: createBrandDto.name },
-    });
-
-    if (existingBrand) {
-      throw new ConflictException(`Brand with name "${createBrandDto.name}" already exists`);
-    }
 
     const brand = this.brandRepository.create(createBrandDto);
     
