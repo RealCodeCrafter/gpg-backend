@@ -36,29 +36,28 @@ async function bootstrap() {
   // Wait a bit for database to be fully ready
   setTimeout(async () => {
     try {
-      console.log('\n[STARTUP] Initializing super admin...');
       const authService = app.get(AuthService);
       const superAdminLogin = 'superadmin';
       const superAdminPassword = crypto.randomBytes(16).toString('hex') + 'A1!';
       
       const superAdmin = await authService.createSuperAdmin(superAdminLogin, superAdminPassword);
       
-      // Use process.stdout.write to ensure logs appear in PM2
-      const logMessage = superAdmin 
-        ? `\n========================================\n✅ SUPER ADMIN CREATED\n========================================\nLogin: ${superAdminLogin}\nPassword: ${superAdminPassword}\n========================================\n`
-        : `\n========================================\nℹ️  SUPER ADMIN ALREADY EXISTS\n========================================\nLogin: ${superAdminLogin}\n(Password was set on first startup)\n========================================\n`;
-      
-      // Log to both console and process.stdout for PM2
-      console.log(logMessage);
-      process.stdout.write(logMessage);
-      process.stdout.write('\n'); // Flush stdout
-      
+      // Only log if super admin was just created (not if it already exists)
       if (superAdmin) {
+        // Use process.stdout.write to ensure logs appear in PM2
+        const logMessage = `\n========================================\n✅ SUPER ADMIN CREATED\n========================================\nLogin: ${superAdminLogin}\nPassword: ${superAdminPassword}\n========================================\n`;
+        
+        // Log to both console and process.stdout for PM2
+        console.log(logMessage);
+        process.stdout.write(logMessage);
+        process.stdout.write('\n'); // Flush stdout
+        
         // Also log to stderr for better visibility in PM2
         const stderrMessage = `\n[SUPER ADMIN] Login: ${superAdminLogin}\n[SUPER ADMIN] Password: ${superAdminPassword}\n\n`;
         process.stderr.write(stderrMessage);
         process.stderr.write('\n'); // Flush stderr
       }
+      // If super admin already exists, don't log anything
     } catch (error) {
       const errorMessage = `\n❌ ERROR CREATING SUPER ADMIN: ${error}\n========================================\n`;
       console.error(errorMessage);
