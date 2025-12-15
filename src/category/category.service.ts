@@ -43,18 +43,15 @@ export class CategoryService {
 
   async findAll(): Promise<Category[]> {
     return this.categoryRepository.find({
-      relations: ['brands'],
+      relations: ['brands', 'brands.products'],
       order: { id: 'ASC' },
     });
   }
 
   async findOne(id: number, includeBrands: boolean = true): Promise<Category> {
-    const options: any = {
-      where: { id },
-    };
-    
+    const options: any = { where: { id } };
     if (includeBrands) {
-      options.relations = ['brands'];
+      options.relations = ['brands', 'brands.products'];
     }
     
     const category = await this.categoryRepository.findOne(options);
