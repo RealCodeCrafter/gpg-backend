@@ -568,22 +568,113 @@
 									"value": "Product description",
 									"type": "text"
 								},
-								{
-									"key": "brandId",
-									"value": "1",
-									"type": "text",
-									"description": "Brend ID (required)"
-								},
-								{
-									"key": "price",
-									"value": "150000",
-									"type": "text"
-								},
-								{
-									"key": "images",
-									"type": "file",
-									"src": []
-								}
+							{
+								"key": "brandId",
+								"value": "1",
+								"type": "text",
+								"description": "Brend ID (required)"
+							},
+							{
+								"key": "saeViscosityClass",
+								"value": "10W-40",
+								"type": "text",
+								"description": "SAE Viscosity Grade"
+							},
+							{
+								"key": "saeViscosityClassStandard",
+								"value": "SAE J300",
+								"type": "text",
+								"description": "SAE Viscosity Grade Standard"
+							},
+							{
+								"key": "densityAt20C",
+								"value": "0.858",
+								"type": "text",
+								"description": "Density at 20°C (g/cm³)"
+							},
+							{
+								"key": "densityAt20CStandard",
+								"value": "ASTM D1298",
+								"type": "text",
+								"description": "Density Standard"
+							},
+							{
+								"key": "kinematicViscosity40C",
+								"value": "101.6",
+								"type": "text",
+								"description": "Kinematic Viscosity at 40°C (mm²/s)"
+							},
+							{
+								"key": "kinematicViscosity40CStandard",
+								"value": "ASTM D445",
+								"type": "text",
+								"description": "Kinematic Viscosity 40°C Standard"
+							},
+							{
+								"key": "kinematicViscosity100C",
+								"value": "15.21",
+								"type": "text",
+								"description": "Kinematic Viscosity at 100°C (mm²/s)"
+							},
+							{
+								"key": "kinematicViscosity100CStandard",
+								"value": "ASTM D445",
+								"type": "text",
+								"description": "Kinematic Viscosity 100°C Standard"
+							},
+							{
+								"key": "viscosityIndex",
+								"value": "154",
+								"type": "text",
+								"description": "Viscosity Index"
+							},
+							{
+								"key": "viscosityIndexStandard",
+								"value": "ASTM D2270",
+								"type": "text",
+								"description": "Viscosity Index Standard"
+							},
+							{
+								"key": "flashPoint",
+								"value": "226",
+								"type": "text",
+								"description": "Flash Point (Open Cup) (°C)"
+							},
+							{
+								"key": "flashPointStandard",
+								"value": "ASTM D92",
+								"type": "text",
+								"description": "Flash Point Standard"
+							},
+							{
+								"key": "pourPoint",
+								"value": "-35",
+								"type": "text",
+								"description": "Pour Point (°C)"
+							},
+							{
+								"key": "pourPointStandard",
+								"value": "ASTM D97",
+								"type": "text",
+								"description": "Pour Point Standard"
+							},
+							{
+								"key": "totalBaseNumber",
+								"value": "7.9",
+								"type": "text",
+								"description": "Total Base Number (TBN), mg KOH/g"
+							},
+							{
+								"key": "totalBaseNumberStandard",
+								"value": "ASTM D2896",
+								"type": "text",
+								"description": "Total Base Number Standard"
+							},
+							{
+								"key": "images",
+								"type": "file",
+								"src": []
+							}
 							]
 						},
 						"url": {
@@ -663,21 +754,112 @@
 									"value": "Yangi mahsulot nomi",
 									"type": "text"
 								},
-								{
-									"key": "brandId",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "price",
-									"value": "200000",
-									"type": "text"
-								},
-								{
-									"key": "images",
-									"type": "file",
-									"src": []
-								}
+							{
+								"key": "brandId",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "saeViscosityClass",
+								"value": "10W-40",
+								"type": "text",
+								"description": "SAE Viscosity Grade"
+							},
+							{
+								"key": "saeViscosityClassStandard",
+								"value": "SAE J300",
+								"type": "text",
+								"description": "SAE Viscosity Grade Standard"
+							},
+							{
+								"key": "densityAt20C",
+								"value": "0.858",
+								"type": "text",
+								"description": "Density at 20°C (g/cm³)"
+							},
+							{
+								"key": "densityAt20CStandard",
+								"value": "ASTM D1298",
+								"type": "text",
+								"description": "Density Standard"
+							},
+							{
+								"key": "kinematicViscosity40C",
+								"value": "101.6",
+								"type": "text",
+								"description": "Kinematic Viscosity at 40°C (mm²/s)"
+							},
+							{
+								"key": "kinematicViscosity40CStandard",
+								"value": "ASTM D445",
+								"type": "text",
+								"description": "Kinematic Viscosity 40°C Standard"
+							},
+							{
+								"key": "kinematicViscosity100C",
+								"value": "15.21",
+								"type": "text",
+								"description": "Kinematic Viscosity at 100°C (mm²/s)"
+							},
+							{
+								"key": "kinematicViscosity100CStandard",
+								"value": "ASTM D445",
+								"type": "text",
+								"description": "Kinematic Viscosity 100°C Standard"
+							},
+							{
+								"key": "viscosityIndex",
+								"value": "154",
+								"type": "text",
+								"description": "Viscosity Index"
+							},
+							{
+								"key": "viscosityIndexStandard",
+								"value": "ASTM D2270",
+								"type": "text",
+								"description": "Viscosity Index Standard"
+							},
+							{
+								"key": "flashPoint",
+								"value": "226",
+								"type": "text",
+								"description": "Flash Point (Open Cup) (°C)"
+							},
+							{
+								"key": "flashPointStandard",
+								"value": "ASTM D92",
+								"type": "text",
+								"description": "Flash Point Standard"
+							},
+							{
+								"key": "pourPoint",
+								"value": "-35",
+								"type": "text",
+								"description": "Pour Point (°C)"
+							},
+							{
+								"key": "pourPointStandard",
+								"value": "ASTM D97",
+								"type": "text",
+								"description": "Pour Point Standard"
+							},
+							{
+								"key": "totalBaseNumber",
+								"value": "7.9",
+								"type": "text",
+								"description": "Total Base Number (TBN), mg KOH/g"
+							},
+							{
+								"key": "totalBaseNumberStandard",
+								"value": "ASTM D2896",
+								"type": "text",
+								"description": "Total Base Number Standard"
+							},
+							{
+								"key": "images",
+								"type": "file",
+								"src": []
+							}
 							]
 						},
 						"url": {
@@ -716,12 +898,31 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": ["{{base_url}}"],
+							"path": [""]
+						},
+						"description": "API health check endpoint"
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://localhost:3000",
+			"value": "https://backend.diomend.uz",
 			"type": "string"
 		},
 		{
