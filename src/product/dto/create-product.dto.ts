@@ -1,5 +1,18 @@
-import { IsString, IsNumber, IsOptional, IsNotEmpty } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsArray, IsOptional, IsNotEmpty } from 'class-validator';
+import { Type, Transform } from 'class-transformer';
+
+const parseArray = (value: any): string[] | undefined => {
+  if (!value) return undefined;
+  if (Array.isArray(value)) return value;
+  if (typeof value === 'string') {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return [value];
+    }
+  }
+  return undefined;
+};
 
 export class CreateProductDto {
   @IsString()
@@ -19,79 +32,42 @@ export class CreateProductDto {
   descriptionEn?: string;
 
   @Type(() => Number)
-  @IsNumber()
   @IsNotEmpty()
   brandId: number;
 
-  @IsString()
+  @Transform(({ value }) => parseArray(value))
+  @IsArray()
   @IsOptional()
-  saeViscosityClass?: string;
+  flash?: string[];
 
-  @IsString()
+  @Transform(({ value }) => parseArray(value))
+  @IsArray()
   @IsOptional()
-  saeViscosityClassStandard?: string;
+  temperature?: string[];
 
-  @Type(() => Number)
-  @IsNumber()
+  @Transform(({ value }) => parseArray(value))
+  @IsArray()
   @IsOptional()
-  densityAt20C?: number;
+  base?: string[];
 
-  @IsString()
+  @Transform(({ value }) => parseArray(value))
+  @IsArray()
   @IsOptional()
-  densityAt20CStandard?: string;
+  sae?: string[];
 
-  @Type(() => Number)
-  @IsNumber()
+  @Transform(({ value }) => parseArray(value))
+  @IsArray()
   @IsOptional()
-  kinematicViscosity40C?: number;
+  density?: string[];
 
-  @IsString()
+  @Transform(({ value }) => parseArray(value))
+  @IsArray()
   @IsOptional()
-  kinematicViscosity40CStandard?: string;
+  kinematic_one?: string[];
 
-  @Type(() => Number)
-  @IsNumber()
+  @Transform(({ value }) => parseArray(value))
+  @IsArray()
   @IsOptional()
-  kinematicViscosity100C?: number;
-
-  @IsString()
-  @IsOptional()
-  kinematicViscosity100CStandard?: string;
-
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
-  viscosityIndex?: number;
-
-  @IsString()
-  @IsOptional()
-  viscosityIndexStandard?: string;
-
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
-  flashPoint?: number;
-
-  @IsString()
-  @IsOptional()
-  flashPointStandard?: string;
-
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
-  pourPoint?: number;
-
-  @IsString()
-  @IsOptional()
-  pourPointStandard?: string;
-
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
-  totalBaseNumber?: number;
-
-  @IsString()
-  @IsOptional()
-  totalBaseNumberStandard?: string;
+  kinematic_two?: string[];
 }
 
