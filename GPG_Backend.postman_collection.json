@@ -623,6 +623,12 @@
 								"description": "Viscosity Index: [\"value\", \"standard\"]"
 							},
 							{
+								"key": "specification",
+								"value": "[\"value\", \"standard\"]",
+								"type": "text",
+								"description": "Specification: [\"value\", \"standard\"]"
+							},
+							{
 								"key": "images",
 								"type": "file",
 								"src": []
@@ -758,6 +764,12 @@
 								"value": "[\"154\", \"ASTM D 2270\"]",
 								"type": "text",
 								"description": "Viscosity Index: [\"value\", \"standard\"]"
+							},
+							{
+								"key": "specification",
+								"value": "[\"value\", \"standard\"]",
+								"type": "text",
+								"description": "Specification: [\"value\", \"standard\"]"
 							},
 							{
 								"key": "images",

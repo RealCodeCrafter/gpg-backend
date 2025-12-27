@@ -74,5 +74,10 @@ export class CreateProductDto {
   @IsArray()
   @IsOptional()
   viscosityIndex?: string[];
+
+  @Transform(({ value }) => parseArray(value))
+  @IsArray()
+  @IsOptional()
+  specification?: string[];
 }
 
