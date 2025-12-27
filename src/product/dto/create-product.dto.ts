@@ -69,5 +69,10 @@ export class CreateProductDto {
   @IsArray()
   @IsOptional()
   kinematic_two?: string[];
+
+  @Transform(({ value }) => parseArray(value))
+  @IsArray()
+  @IsOptional()
+  viscosityIndex?: string[];
 }
 

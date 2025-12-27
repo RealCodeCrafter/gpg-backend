@@ -617,6 +617,12 @@
 								"description": "Kinematic Viscosity at 100°C: [\"value\", \"standard\"]"
 							},
 							{
+								"key": "viscosityIndex",
+								"value": "[\"154\", \"ASTM D 2270\"]",
+								"type": "text",
+								"description": "Viscosity Index: [\"value\", \"standard\"]"
+							},
+							{
 								"key": "images",
 								"type": "file",
 								"src": []
@@ -746,6 +752,12 @@
 								"value": "[\"19.17\", \"ASTM D 445\"]",
 								"type": "text",
 								"description": "Kinematic Viscosity at 100°C: [\"value\", \"standard\"]"
+							},
+							{
+								"key": "viscosityIndex",
+								"value": "[\"154\", \"ASTM D 2270\"]",
+								"type": "text",
+								"description": "Viscosity Index: [\"value\", \"standard\"]"
 							},
 							{
 								"key": "images",

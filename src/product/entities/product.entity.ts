@@ -52,6 +52,9 @@ export class Product {
   @Column({ type: 'text', array: true, nullable: true })
   kinematic_two: string[];
 
+  @Column({ type: 'text', array: true, nullable: true })
+  viscosityIndex: string[];
+
   @ManyToOne(() => Brand, (brand) => brand.products, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'brandId' })
   brand: Brand;
