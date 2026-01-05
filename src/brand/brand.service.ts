@@ -48,25 +48,46 @@ export class BrandService {
       order: { id: 'ASC' },
     });
   }
+async findOne(id: number, includeProducts: boolean = true): Promise<Brand> {
+  const options: any = {
+    where: { id },
+    relations: ['category'],
+  };
 
-  async findOne(id: number, includeProducts: boolean = true): Promise<Brand> {
-    const options: any = {
-      where: { id },
-      relations: ['category'],
-    };
-    
-    if (includeProducts) {
-      options.relations.push('products');
-    }
-    
-    const brand = await this.brandRepository.findOne(options);
-
-    if (!brand) {
-      throw new NotFoundException(`Brand with ID ${id} not found`);
-    }
-
-    return brand;
+  if (includeProducts) {
+    options.relations.push('products');
   }
+
+  const brand = await this.brandRepository.findOne(options);
+
+  if (!brand) {
+    throw new NotFoundException(`Brand with ID ${id} not found`);
+  }
+
+  if (includeProducts && brand.products && brand.products.length > 0) {
+    const desiredOrder = [
+      'V. Genuine',
+      'V. PRO-long',
+      'V. Red',
+      'V. Blue',
+      'V. Green',
+      'V. Yellow',
+      'V. Tosol',
+    ];
+
+    brand.products.sort((a, b) => {
+      const indexA = desiredOrder.indexOf(a.nameRu);
+      const indexB = desiredOrder.indexOf(b.nameRu);
+      if (indexA === -1 && indexB === -1) return 0;
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+  }
+
+  return brand;
+}
+
 
   async update(
     id: number,
