@@ -49,19 +49,43 @@ export class CategoryService {
   }
 
   async findOne(id: number, includeBrands: boolean = true): Promise<Category> {
-    const options: any = { where: { id } };
-    if (includeBrands) {
-      options.relations = ['brands', 'brands.products'];
-    }
-    
-    const category = await this.categoryRepository.findOne(options);
+  const options: any = { where: { id } };
 
-    if (!category) {
-      throw new NotFoundException(`Category with ID ${id} not found`);
-    }
-
-    return category;
+  if (includeBrands) {
+    options.relations = ['brands', 'brands.products'];
   }
+
+  const category = await this.categoryRepository.findOne(options);
+
+  if (!category) {
+    throw new NotFoundException(`Category with ID ${id} not found`);
+  }
+
+  const productOrder = [
+    'Genuine',
+    'PRO-long',
+    'Red',
+    'Blue',
+    'Green',
+    'Yellow',
+    'Tosol',
+  ];
+
+  if (category.brands) {
+    category.brands.forEach((brand) => {
+      if (brand.products) {
+        brand.products.sort((a, b) => {
+          return (
+            productOrder.indexOf(a.nameRu) -
+            productOrder.indexOf(b.nameRu)
+          );
+        });
+      }
+    });
+  }
+
+  return category;
+}
 
   async update(
     id: number,
