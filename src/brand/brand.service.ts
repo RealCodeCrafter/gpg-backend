@@ -66,13 +66,13 @@ async findOne(id: number, includeProducts: boolean = true): Promise<Brand> {
 
   if (includeProducts && brand.products && brand.products.length > 0) {
     const desiredOrder = [
-      'V. Genuine',
-      'V. PRO-long',
-      'V. Red',
-      'V. Blue',
-      'V. Green',
-      'V. Yellow',
-      'V. Tosol',
+      'Genuine',
+      'PRO-long',
+      'Red',
+      'Blue',
+      'Green',
+      'Yellow',
+      'Tosol',
     ];
 
     brand.products.sort((a, b) => {
