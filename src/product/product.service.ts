@@ -116,7 +116,7 @@ export class ProductService {
   }
 
   async search(text: string): Promise<Product[]> {
-  if (!text || !text.trim()) {
+  if (!text?.trim()) {
     return [];
   }
 
@@ -124,11 +124,13 @@ export class ProductService {
     .createQueryBuilder('product')
     .leftJoinAndSelect('product.brand', 'brand')
     .leftJoinAndSelect('brand.category', 'category')
-    .where('product.nameRu ILIKE :q', { q: `%${text}%` })
-    .orWhere('product.nameEn ILIKE :q', { q: `%${text}%` })
-    .orWhere('product.descriptionRu ILIKE :q', { q: `%${text}%` })
-    .orWhere('product.descriptionEn ILIKE :q', { q: `%${text}%` })
+    .where(
+      `(product.nameRu ILIKE :q
+        OR product.nameEn ILIKE :q)`,
+      { q: `%${text}%` },
+    )
     .orderBy('product.id', 'DESC')
+    .take(20)
     .getMany();
 }
 
