@@ -36,6 +36,12 @@ export class ProductController {
     return this.productService.create(createProductDto, images);
   }
 
+  @Get('search/:text')
+search(@Param('text') text: string) {
+  return this.productService.search(text);
+}
+
+
   @Get()
   findAll(@Query('brandId') brandId?: string) {
     if (brandId) {
