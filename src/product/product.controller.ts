@@ -27,8 +27,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   @UseInterceptors(FilesInterceptor('images', 20))
   create(
     @Body() createProductDto: CreateProductDto,
@@ -62,8 +62,8 @@ async search(@Query('query') query: string) {
   }
 
   @Patch(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   @UseInterceptors(FilesInterceptor('images', 20))
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -74,8 +74,8 @@ async search(@Query('query') query: string) {
   }
 
   @Delete(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.productService.remove(id);
     return { message: 'Product deleted successfully' };
