@@ -115,8 +115,8 @@ export class ProductService {
     await this.productRepository.remove(product);
   }
 
-  async search(text: string): Promise<Product[]> {
-  if (!text?.trim()) {
+  async search(query: string): Promise<Product[]> {
+  if (!query?.trim()) {
     return [];
   }
 
@@ -127,7 +127,7 @@ export class ProductService {
     .where(
       `(product.nameRu ILIKE :q
         OR product.nameEn ILIKE :q)`,
-      { q: `%${text}%` },
+      { q: `%${query}%` },
     )
     .orderBy('product.id', 'DESC')
     .take(20)

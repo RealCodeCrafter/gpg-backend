@@ -11,6 +11,7 @@ import {
   ParseIntPipe,
   Query,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ProductService } from './product.service';
@@ -36,11 +37,16 @@ export class ProductController {
     return this.productService.create(createProductDto, images);
   }
 
-  @Get('search/:text')
-search(@Param('text') text: string) {
-  return this.productService.search(text);
-}
+  @Get('search')
+async search(@Query('query') query: string) {
+  if (!query) {
+    throw new BadRequestException(
+      'Query param is required, e.g. ?query=ZIC',
+    );
+  }
 
+  return this.productService.search(query);
+}
 
   @Get()
   findAll(@Query('brandId') brandId?: string) {
