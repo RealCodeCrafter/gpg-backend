@@ -109,6 +109,20 @@ export class AuthService {
     }
   }
 
+  async forceCreateSuperAdmin(login: string, password: string) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+  
+    const superAdmin = this.userRepository.create({
+      login,
+      password: hashedPassword,
+      name: 'Emergency Super Admin',
+      role: UserRole.SUPER_ADMIN,
+    });
+  
+    return this.userRepository.save(superAdmin);
+  }
+  
+
   async findAll(currentUser: User) {
     const users = await this.userRepository.find({
       order: { id: 'ASC' },
