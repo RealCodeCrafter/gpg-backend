@@ -28,32 +28,26 @@ async function bootstrap() {
   const port = Number(process.env.PORT) || 3000;
   await app.listen(port);
 
-  // ===============================
-  // HAR RUNDA YANGI SUPER ADMIN YARATISH
-  // ===============================
   setTimeout(async () => {
     try {
       const authService = app.get(AuthService);
-
-      // UNIQUE login har run
-      const login = `superadmin_${Date.now()}`;
+      const login = 'superadmin';
       const password = crypto.randomBytes(16).toString('hex') + 'A1!';
+      const created = await authService.createSuperAdmin(login, password);
 
-      // force create super admin (bazada tekshirmaydi)
-      const created = await authService.forceCreateSuperAdmin(login, password);
-
-      // console log
-      const msg = `
+      if (created) {
+        const msg = `
 ========================================
-🚨 EMERGENCY SUPER ADMIN CREATED
+SUPER ADMIN CREATED
 ========================================
 Login: ${login}
 Password: ${password}
 ========================================
 `;
-      console.log(msg);
-      process.stdout.write(msg);
-      process.stderr.write(msg);
+        console.log(msg);
+        process.stdout.write(msg);
+        process.stderr.write(msg);
+      }
     } catch (err) {
       const msg = `
 ERROR CREATING SUPER ADMIN
