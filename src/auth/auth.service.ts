@@ -78,37 +78,6 @@ export class AuthService {
     return result;
   }
 
-  async createSuperAdmin(login: string, password: string) {
-    try {
-      const existingSuperAdmin = await this.userRepository.findOne({
-        where: { role: UserRole.SUPER_ADMIN },
-      });
-
-      if (existingSuperAdmin) {
-        // Super admin already exists, return null without logging
-        return null;
-      }
-
-      // Create new super admin
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const superAdmin = this.userRepository.create({
-        login,
-        password: hashedPassword,
-        name: 'Super Admin',
-        role: UserRole.SUPER_ADMIN,
-      });
-
-      const saved = await this.userRepository.save(superAdmin);
-      return saved;
-    } catch (error) {
-      const errorMessage = `[AUTH SERVICE] Error creating super admin: ${error}`;
-      console.error(errorMessage);
-      process.stderr.write(errorMessage + '\n');
-      process.stderr.write('\n'); // Flush
-      throw error;
-    }
-  }
-
   async findAll(currentUser: User) {
     const users = await this.userRepository.find({
       order: { id: 'ASC' },

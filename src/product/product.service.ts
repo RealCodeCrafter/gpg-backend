@@ -107,7 +107,6 @@ export class ProductService {
       try {
         await this.fileUploadService.deleteFiles(product.images);
       } catch (error) {
-        console.error('Error deleting product images:', error);
         // Continue with entity deletion even if image deletion fails
       }
     }

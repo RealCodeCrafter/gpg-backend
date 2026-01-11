@@ -32,7 +32,7 @@ import { HealthController } from './health/health.controller';
         password: configService.get('DB_PASSWORD', 'postgres'),
         database: configService.get('DB_DATABASE', 'gpg_db'),
         entities: [Category, Brand, Product, User],
-        synchronize: true,
+        synchronize: false,
         logging: false,
       }),
     }),
