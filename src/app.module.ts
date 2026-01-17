@@ -36,14 +36,12 @@ import { HealthController } from './health/health.controller';
         logging: false,
       }),
     }),
-
     TypeOrmModule.forFeature([
       Category,
       Brand,
       Product,
       User,
     ]),
-
     CategoryModule,
     BrandModule,
     ProductModule,

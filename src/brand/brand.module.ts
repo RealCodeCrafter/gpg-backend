@@ -12,6 +12,7 @@ import { CategoryModule } from '../category/category.module';
     TypeOrmModule.forFeature([Brand, Product]),
     forwardRef(() => CategoryModule),
   ],
+  
   controllers: [BrandController],
   providers: [BrandService, FileUploadService],
   exports: [BrandService],
