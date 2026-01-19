@@ -40,5 +40,6 @@ lerna-debug.log*
 .env.*.local
 
 # WordPress uploads folder (do not push)
-/upload
+upload/
+
 
