@@ -46,19 +46,19 @@ export class ContactService {
       from: `"GPG Group Website" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_EMAIL,
       replyTo: data.email,
-      subject: 'GPG Group – New Contact Message',
+      subject: 'GPG Group – Новое сообщение с сайта',
       html: `
-        <h2>📩 New message from GPG Group website</h2>
-        <p><strong>Full name:</strong> ${safe(data.fullName)}</p>
+        <h2>📩 Новое сообщение с сайта GPG Group</h2>
+        <p><strong>ФИО:</strong> ${safe(data.fullName)}</p>
         <p><strong>Email:</strong> ${safe(data.email)}</p>
-        <p><strong>Phone:</strong> ${safe(data.phone)}</p>
-        <p><strong>Company:</strong> ${safe(data.company)}</p>
-        <p><strong>Message:</strong></p>
+        <p><strong>Телефон:</strong> ${safe(data.phone)}</p>
+        <p><strong>Компания:</strong> ${safe(data.company)}</p>
+        <p><strong>Сообщение:</strong></p>
         <div style="background:#f4f6f8;padding:15px;border-left:4px solid #8bc34a;">
           ${safe(data.message)}
         </div>
         <hr />
-        <small>Sent at: ${new Date().toLocaleString('en-GB')}</small>
+        <small>Время отправки: ${new Date().toLocaleString('ru-RU')}</small>
       `,
     };
 
