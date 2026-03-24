@@ -54,7 +54,7 @@ export class ProductService {
       .leftJoinAndSelect('brand.category', 'category')
       .orderBy(
         `CASE
-          WHEN product.createdAt < :cutoff THEN 0
+          WHEN "product"."createdAt" < :cutoff THEN 0
           ELSE 1
         END`,
         'ASC',
@@ -62,7 +62,7 @@ export class ProductService {
       // Preserve old products ordering (legacy behavior)
       .addOrderBy(
         `CASE
-          WHEN product.createdAt < :cutoff THEN product.id
+          WHEN "product"."createdAt" < :cutoff THEN "product"."id"
           ELSE NULL
         END`,
         'DESC',
@@ -70,7 +70,7 @@ export class ProductService {
       // Append new products at the end in insertion-time order
       .addOrderBy(
         `CASE
-          WHEN product.createdAt >= :cutoff THEN product.createdAt
+          WHEN "product"."createdAt" >= :cutoff THEN "product"."createdAt"
           ELSE NULL
         END`,
         'ASC',
