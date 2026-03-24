@@ -35,18 +35,74 @@ export class BrandService {
   }
 
   async findAll(): Promise<Brand[]> {
-    return this.brandRepository.find({
-      relations: ['category', 'products'],
-      order: { id: 'ASC' },
-    });
+    const cutoffDate = new Date('2026-03-24T00:00:00.000Z');
+
+    return this.brandRepository
+      .createQueryBuilder('brand')
+      .leftJoinAndSelect('brand.category', 'category')
+      .leftJoinAndSelect('brand.products', 'products')
+      .orderBy(
+        `CASE
+          WHEN "brand"."createdAt" < :cutoff THEN 0
+          ELSE 1
+        END`,
+        'ASC',
+      )
+      // Preserve old brands ordering (legacy behavior)
+      .addOrderBy(
+        `CASE
+          WHEN "brand"."createdAt" < :cutoff THEN "brand"."id"
+          ELSE NULL
+        END`,
+        'ASC',
+      )
+      // Append new brands at the end in insertion-time order
+      .addOrderBy(
+        `CASE
+          WHEN "brand"."createdAt" >= :cutoff THEN "brand"."createdAt"
+          ELSE NULL
+        END`,
+        'ASC',
+      )
+      .addOrderBy('brand.id', 'ASC')
+      .setParameter('cutoff', cutoffDate)
+      .getMany();
   }
 
   async findByCategory(categoryId: number): Promise<Brand[]> {
-    return this.brandRepository.find({
-      where: { categoryId },
-      relations: ['category', 'products'],
-      order: { id: 'ASC' },
-    });
+    const cutoffDate = new Date('2026-03-24T00:00:00.000Z');
+
+    return this.brandRepository
+      .createQueryBuilder('brand')
+      .leftJoinAndSelect('brand.category', 'category')
+      .leftJoinAndSelect('brand.products', 'products')
+      .where('brand.categoryId = :categoryId', { categoryId })
+      .orderBy(
+        `CASE
+          WHEN "brand"."createdAt" < :cutoff THEN 0
+          ELSE 1
+        END`,
+        'ASC',
+      )
+      // Preserve old brands ordering (legacy behavior)
+      .addOrderBy(
+        `CASE
+          WHEN "brand"."createdAt" < :cutoff THEN "brand"."id"
+          ELSE NULL
+        END`,
+        'ASC',
+      )
+      // Append new brands at the end in insertion-time order
+      .addOrderBy(
+        `CASE
+          WHEN "brand"."createdAt" >= :cutoff THEN "brand"."createdAt"
+          ELSE NULL
+        END`,
+        'ASC',
+      )
+      .addOrderBy('brand.id', 'ASC')
+      .setParameter('cutoff', cutoffDate)
+      .getMany();
   }
 
   async findOne(id: number, includeProducts: boolean = true): Promise<Brand> {
