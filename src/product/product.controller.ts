@@ -80,5 +80,6 @@ async search(@Query('query') query: string) {
     await this.productService.remove(id);
     return { message: 'Product deleted successfully' };
   }
+  
 }
 

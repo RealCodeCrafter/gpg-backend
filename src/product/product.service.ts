@@ -46,10 +46,38 @@ export class ProductService {
   }
 
   async findAll(): Promise<Product[]> {
-    return this.productRepository.find({
-      relations: ['brand', 'brand.category'],
-      order: { id: 'DESC' },
-    });
+    const cutoffDate = new Date('2026-03-24T00:00:00.000Z');
+
+    return this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.brand', 'brand')
+      .leftJoinAndSelect('brand.category', 'category')
+      .orderBy(
+        `CASE
+          WHEN product.createdAt < :cutoff THEN 0
+          ELSE 1
+        END`,
+        'ASC',
+      )
+      // Preserve old products ordering (legacy behavior)
+      .addOrderBy(
+        `CASE
+          WHEN product.createdAt < :cutoff THEN product.id
+          ELSE NULL
+        END`,
+        'DESC',
+      )
+      // Append new products at the end in insertion-time order
+      .addOrderBy(
+        `CASE
+          WHEN product.createdAt >= :cutoff THEN product.createdAt
+          ELSE NULL
+        END`,
+        'ASC',
+      )
+      .addOrderBy('product.id', 'ASC')
+      .setParameter('cutoff', cutoffDate)
+      .getMany();
   }
 
   async findByBrand(brandId: number): Promise<Product[]> {
