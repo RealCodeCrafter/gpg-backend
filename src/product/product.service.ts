@@ -67,10 +67,10 @@ export class ProductService {
         END`,
         'DESC',
       )
-      // Append new products at the end in insertion-time order
+      // Ramziddin kutgandek: Yangi mahsulotlar oxirgi tahrirlangan vaqti (updatedAt) bo'yicha o'sib boradi
       .addOrderBy(
         `CASE
-          WHEN "product"."createdAt" >= :cutoff THEN "product"."createdAt"
+          WHEN "product"."createdAt" >= :cutoff THEN "product"."updatedAt"
           ELSE NULL
         END`,
         'ASC',
@@ -115,6 +115,9 @@ export class ProductService {
 
     Object.assign(product, updateProductDto);
 
+    // Ramziddin aytganidek, har safar edit bo'lganda vaqt yangilanadi va mahsulot oxiriga o'tadi
+    product.updatedAt = new Date();
+
     if (images && images.length > 0) {
       // Delete old images
       if (product.images && product.images.length > 0) {
@@ -143,23 +146,21 @@ export class ProductService {
   }
 
   async search(query: string): Promise<Product[]> {
-  if (!query?.trim()) {
-    return [];
+    if (!query?.trim()) {
+      return [];
+    }
+
+    return this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.brand', 'brand')
+      .leftJoinAndSelect('brand.category', 'category')
+      .where(
+        `(product.nameRu ILIKE :q
+          OR product.nameEn ILIKE :q)`,
+        { q: `%${query}%` },
+      )
+      .orderBy('product.id', 'DESC')
+      .take(20)
+      .getMany();
   }
-
-  return this.productRepository
-    .createQueryBuilder('product')
-    .leftJoinAndSelect('product.brand', 'brand')
-    .leftJoinAndSelect('brand.category', 'category')
-    .where(
-      `(product.nameRu ILIKE :q
-        OR product.nameEn ILIKE :q)`,
-      { q: `%${query}%` },
-    )
-    .orderBy('product.id', 'DESC')
-    .take(20)
-    .getMany();
 }
-
-}
-
