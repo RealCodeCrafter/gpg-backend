@@ -44,7 +44,15 @@ export class CategoryService {
   async findAll(): Promise<Category[]> {
     return this.categoryRepository.find({
       relations: ['brands', 'brands.products'],
-      order: { id: 'ASC' },
+      order: { 
+        id: 'ASC',                      // Kategoriyalar tartibi
+        brands: {
+          id: 'ASC',                    // Brendlar tartibi
+          products: {
+            updatedAt: 'ASC',           // RAMZIDDIN XO'XAGAN MANTIQ: Edit qilingan mahsulot orqasidan (oxiridan) qo'shiladi
+          },
+        },
+      },
     });
   }
 
@@ -52,6 +60,14 @@ export class CategoryService {
     const options: any = { where: { id } };
     if (includeBrands) {
       options.relations = ['brands', 'brands.products'];
+      options.order = {
+        brands: {
+          id: 'ASC',
+          products: {
+            updatedAt: 'ASC',           // Bitta kategoriyani urganda ham mahsulotlar orqasidan keladi
+          },
+        },
+      };
     }
     
     const category = await this.categoryRepository.findOne(options);
@@ -132,11 +148,9 @@ export class CategoryService {
         await this.fileUploadService.deleteFiles(category.images);
       } catch (error) {
         console.error('Error deleting category images:', error);
-        // Continue with entity deletion even if image deletion fails
       }
     }
 
     await this.categoryRepository.remove(category);
   }
 }
-
